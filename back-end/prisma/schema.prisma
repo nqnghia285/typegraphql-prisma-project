@@ -1,0 +1,58 @@
+datasource db {
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
+}
+
+generator client {
+   provider = "prisma-client-js"
+}
+
+generator typegraphql {
+   provider = "typegraphql-prisma"
+}
+
+enum Gender {
+   MALE
+   FEMALE
+}
+
+enum Role {
+   ADMIN
+   CUSTOMER
+}
+
+model Task {
+   id          Int      @id @default(autoincrement()) @db.SmallInt
+   title       String   @db.VarChar(30)
+   description String?  @db.VarChar(255)
+   deadline    DateTime
+   done        Boolean  @default(false)
+   taskListId  Int      @db.SmallInt
+   createdAt   DateTime @default(now())
+   updatedAt   DateTime @updatedAt
+   taskList    TaskList @relation(fields: [taskListId], references: [id])
+}
+
+model TaskList {
+   id          Int      @id @default(autoincrement()) @db.SmallInt
+   title       String   @db.VarChar(30)
+   description String?  @db.VarChar(255)
+   userId      Int      @db.SmallInt
+   createdAt   DateTime @default(now())
+   updatedAt   DateTime @updatedAt
+   user        User     @relation(fields: [userId], references: [id])
+   tasks       Task[]
+}
+
+model User {
+   id        Int        @id @default(autoincrement()) @db.SmallInt
+   name      String     @db.VarChar(30)
+   gender    Gender     @default(MALE)
+   email     String     @unique @db.VarChar(30)
+   /// @TypeGraphQL.omit(output: true)
+   password  String     @db.VarChar(60)
+   role      Role       @default(CUSTOMER)
+   createdAt DateTime   @default(now())
+   updatedAt DateTime   @updatedAt
+   taskLists TaskList[]
+}

@@ -1,0 +1,7 @@
+dist
+public
+node_modules
+prisma/migrations
+upload
+package.json
+prisma/schema.prisma
