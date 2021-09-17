@@ -14,7 +14,6 @@
 		"authenticate-user": "^1.2.9",
 		"class-validator": "^0.13.1",
 		"config-express-app": "^1.1.2",
-		"customed-bcrypt": "^1.0.8",
 		"dotenv": "^10.0.0",
 		"express": "^4.17.1",
 		"fs": "^0.0.1-security",
@@ -28,14 +27,12 @@
 		"reflect-metadata": "^0.1.13",
 		"setup-apollo-server-express": "^1.4.14",
 		"ts-node": "^10.2.1",
-		"tsconfig-paths": "^3.11.0",
 		"type-graphql": "^1.1.1",
 		"typescript": "^4.4.2"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.12",
 		"prisma": "3.0.1",
-		"ts-patch": "^1.4.4",
 		"ttypescript": "^1.5.12",
 		"typegraphql-prisma": "^0.16.0",
 		"typescript-transform-paths": "^3.3.1"
@@ -51,11 +48,12 @@
 	},
 	"scripts": {
 		"build-fe": "cd ../front-end/ && yarn build && cp -a build/. ../back-end/public/",
-		"build-be": "tsc && cp -a tsconfig.json dist/ && cp -a package.json dist/ && cp -a .gitignore dist/ && cp -a .env dist/ && cp -a prisma/schema.prisma dist/prisma/ && cp -a public/. dist/public/ && cd dist && yarn && yarn prisma generate",
+		"build-be": "ttsc && cp -a tsconfig.json dist/ && cp -a package.json dist/ && cp -a .gitignore dist/ && cp -a .env dist/ && cp -a prisma/schema.prisma dist/prisma/ && cp -a public/. dist/public/ && cd dist && yarn && prisma generate",
 		"build": "yarn build-fe && yarn build-be && cp -a public/. dist/public/",
 		"dev": "cd ../front-end/ && yarn build && cp -a build/. ../back-end/public/ && cd ../back-end/ && nodemon -r dotenv/config server.ts",
 		"start": "ts-node -r dotenv/config server.ts",
-		"dev-nb": "nodemon -r dotenv/config server.ts"
+		"dev-nb": "nodemon -r dotenv/config server.ts",
+		"generate": "prisma generate"
 	},
 	"prisma": {
 		"seed": "sh prisma/seed.sh"
